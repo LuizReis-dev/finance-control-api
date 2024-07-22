@@ -2,6 +2,7 @@ package com.fc.financecontrolapi.controllers.exception;
 
 import com.fc.financecontrolapi.dtos.errors.CustomError;
 import com.fc.financecontrolapi.dtos.errors.ValidationError;
+import com.fc.financecontrolapi.exceptions.user.AuthenticationException;
 import com.fc.financecontrolapi.exceptions.user.UserAlreadyExistsException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,12 @@ public class ControllerExceptionHandler {
             err.addError(f.getField(),f.getDefaultMessage());
         }
         return ResponseEntity.status(status).body(err);
+    }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<CustomError> authenticationException(MethodArgumentNotValidException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomError response = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 }

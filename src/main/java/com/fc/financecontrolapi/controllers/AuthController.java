@@ -1,7 +1,9 @@
 package com.fc.financecontrolapi.controllers;
 
+import com.fc.financecontrolapi.dtos.auth.SignInRequest;
 import com.fc.financecontrolapi.dtos.auth.SignUpRequest;
 import com.fc.financecontrolapi.dtos.auth.TokenResponse;
+import com.fc.financecontrolapi.exceptions.user.AuthenticationException;
 import com.fc.financecontrolapi.exceptions.user.UserAlreadyExistsException;
 import com.fc.financecontrolapi.services.interfaces.AuthenticationService;
 import jakarta.validation.Valid;
@@ -23,7 +25,12 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<TokenResponse> signUp(@Valid @RequestBody SignUpRequest signUpRequest) throws UserAlreadyExistsException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.signUp((signUpRequest)));
+    public ResponseEntity<TokenResponse> signUp(@Valid @RequestBody SignUpRequest request) throws UserAlreadyExistsException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.signUp((request)));
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<TokenResponse> signIn(@Valid @RequestBody SignInRequest request) throws AuthenticationException {
+        return ResponseEntity.status(HttpStatus.OK).body(authenticationService.signIn((request)));
     }
 }
