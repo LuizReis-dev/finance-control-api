@@ -21,4 +21,7 @@ public class Category {
     private Boolean isActive;
     private Instant createdAt;
     private Instant deleteAt;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
