@@ -20,8 +20,16 @@ public class Category {
     private String description;
     private Boolean isActive;
     private Instant createdAt;
-    private Instant deleteAt;
+    private Instant deletedAt;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Category(String name, String description, User user){
+        this.name = name;
+        this.description = description;
+        this.user = user;
+        this.isActive = true;
+        this.createdAt = Instant.now();
+    }
 }

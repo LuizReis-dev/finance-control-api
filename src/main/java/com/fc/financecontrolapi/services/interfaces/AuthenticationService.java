@@ -5,8 +5,10 @@ import com.fc.financecontrolapi.dtos.auth.SignUpRequest;
 import com.fc.financecontrolapi.dtos.auth.TokenResponse;
 import com.fc.financecontrolapi.exceptions.user.AuthenticationException;
 import com.fc.financecontrolapi.exceptions.user.UserAlreadyExistsException;
+import com.fc.financecontrolapi.model.User;
 
 public interface AuthenticationService {
     TokenResponse signUp(SignUpRequest request) throws UserAlreadyExistsException;
     TokenResponse signIn(SignInRequest request) throws AuthenticationException;
+    User getAuthenticatedUser() throws AuthenticationException;
 }
