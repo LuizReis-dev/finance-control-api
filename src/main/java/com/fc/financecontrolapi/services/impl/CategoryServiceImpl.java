@@ -2,6 +2,7 @@ package com.fc.financecontrolapi.services.impl;
 
 import com.fc.financecontrolapi.dtos.category.CategoryDTO;
 import com.fc.financecontrolapi.dtos.category.CategoryListDTO;
+import com.fc.financecontrolapi.exceptions.UnprocessableEntityException;
 import com.fc.financecontrolapi.exceptions.user.AuthenticationException;
 import com.fc.financecontrolapi.model.Category;
 import com.fc.financecontrolapi.model.User;
@@ -30,7 +31,12 @@ public class CategoryServiceImpl implements CategoryService {
         User loggedUser = authenticationService.getAuthenticatedUser();
 
         List<Category> categories = categoriesDTO.getCategories().stream()
-                .map(categoryDTO -> new Category(categoryDTO.getName(), categoryDTO.getDescription(), loggedUser))
+                .map(categoryDTO -> {
+                    if (categoryDTO.getName() == null || categoryDTO.getName().trim().isEmpty()) {
+                        throw new UnprocessableEntityException("Category", "Category name cannot be empty");
+                    }
+                    return new Category(categoryDTO.getName(), categoryDTO.getDescription(), loggedUser);
+                })
                 .collect(Collectors.toList());
 
         repository.saveAll(categories);

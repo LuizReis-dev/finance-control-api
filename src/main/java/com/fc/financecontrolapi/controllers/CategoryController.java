@@ -3,6 +3,7 @@ package com.fc.financecontrolapi.controllers;
 import com.fc.financecontrolapi.dtos.category.CategoryListDTO;
 import com.fc.financecontrolapi.exceptions.user.AuthenticationException;
 import com.fc.financecontrolapi.services.interfaces.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addCategories(@RequestBody CategoryListDTO categoriesDTO) throws AuthenticationException {
+    public ResponseEntity<Void> addCategories(@RequestBody @Valid CategoryListDTO categoriesDTO) throws AuthenticationException {
         service.addCategories(categoriesDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
