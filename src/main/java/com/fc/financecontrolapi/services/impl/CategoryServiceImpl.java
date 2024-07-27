@@ -13,6 +13,7 @@ import com.fc.financecontrolapi.services.interfaces.CategoryService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -60,11 +61,22 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void inactivateCategory(Long categoryId) throws AuthenticationException, ResourceNotFoundException {
-        User loggedUser = authenticationService.getAuthenticatedUser();
-        Category category = repository.findCategoryByUserAndCategoryId(loggedUser.getId(), categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found for this user!"));
-
+        Category category = findCategoryByUser(categoryId);
         category.setIsActive(false);
         repository.save(category);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCategory(Long categoryId) throws AuthenticationException, ResourceNotFoundException {
+        Category category = findCategoryByUser(categoryId);
+        category.setDeletedAt(Instant.now());
+        repository.save(category);
+    }
+
+    private Category findCategoryByUser(Long categoryId) throws AuthenticationException, ResourceNotFoundException {
+        User loggedUser = authenticationService.getAuthenticatedUser();
+        return repository.findCategoryByUserAndCategoryId(loggedUser.getId(), categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found for this user!"));
     }
 }

@@ -43,4 +43,10 @@ public class CategoryController {
         service.inactivateCategory(categoryId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @DeleteMapping(value = "/delete/{categoryId}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId) throws AuthenticationException, ResourceNotFoundException {
+        service.deleteCategory(categoryId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

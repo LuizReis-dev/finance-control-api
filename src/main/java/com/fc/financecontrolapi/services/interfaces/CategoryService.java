@@ -13,4 +13,5 @@ public interface CategoryService {
     List<CategoryDTO> getUserActiveCategories() throws AuthenticationException;
     List<CategoryDTO> getUserCategories() throws AuthenticationException;
     void inactivateCategory(Long categoryId) throws AuthenticationException, ResourceNotFoundException;
+    void deleteCategory(Long categoryId) throws AuthenticationException, ResourceNotFoundException;
 }
