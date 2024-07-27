@@ -30,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void addCategories(CategoryListDTO categoriesDTO) throws AuthenticationException {
+    public void addCategories(CategoryListDTO categoriesDTO) {
         User loggedUser = authenticationService.getAuthenticatedUser();
 
         List<Category> categories = categoriesDTO.getCategories().stream()
@@ -46,21 +46,21 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDTO> getUserActiveCategories() throws AuthenticationException {
+    public List<CategoryDTO> getUserActiveCategories(){
         User loggedUser = authenticationService.getAuthenticatedUser();
 
         return repository.findActiveCategoriesByUser(loggedUser.getId());
     }
 
     @Override
-    public List<CategoryDTO> getUserCategories() throws AuthenticationException {
+    public List<CategoryDTO> getUserCategories(){
         User loggedUser = authenticationService.getAuthenticatedUser();
         return repository.findCategoriesByUser(loggedUser.getId());
     }
 
     @Override
     @Transactional
-    public void inactivateCategory(Long categoryId) throws AuthenticationException, ResourceNotFoundException {
+    public void inactivateCategory(Long categoryId) throws ResourceNotFoundException {
         Category category = findCategoryByUser(categoryId);
         category.setIsActive(false);
         repository.save(category);
@@ -68,13 +68,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public void deleteCategory(Long categoryId) throws AuthenticationException, ResourceNotFoundException {
+    public void deleteCategory(Long categoryId) throws ResourceNotFoundException {
         Category category = findCategoryByUser(categoryId);
         category.setDeletedAt(Instant.now());
         repository.save(category);
     }
 
-    private Category findCategoryByUser(Long categoryId) throws AuthenticationException, ResourceNotFoundException {
+    private Category findCategoryByUser(Long categoryId) throws ResourceNotFoundException {
         User loggedUser = authenticationService.getAuthenticatedUser();
         return repository.findCategoryByUserAndCategoryId(loggedUser.getId(), categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found for this user!"));

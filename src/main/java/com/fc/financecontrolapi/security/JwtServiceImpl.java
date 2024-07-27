@@ -33,8 +33,10 @@ public class JwtServiceImpl implements JwtService{
     }
 
     @Override
-    public String generateToken(UserDetails user) {
-        return generateToken(new HashMap<>(), user);
+    public String generateToken(UserDetails user, Long userId) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", userId);
+        return generateToken(claims, user);
     }
 
     @Override
@@ -54,6 +56,13 @@ public class JwtServiceImpl implements JwtService{
         final String username = extractUsername(token);
         return (username.equals(user.getUsername())) && !isTokenExpired(token);
     }
+
+    @Override
+    public Long extractUserId(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("id", Long.class);
+    }
+
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
@@ -70,7 +79,6 @@ public class JwtServiceImpl implements JwtService{
                 .parseClaimsJws(token)
                 .getBody();
     }
-
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);

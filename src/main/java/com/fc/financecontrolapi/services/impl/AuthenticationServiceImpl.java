@@ -48,7 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setCreatedAt(Instant.now());
         userRepository.save(user);
 
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(user, user.getId());
         return new TokenResponse(user.getId(), jwtToken);
     }
 
@@ -61,15 +61,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if(!authentication.isAuthenticated()) throw new AuthenticationException("Not authenticated");
 
         User user = (User) authentication.getPrincipal();
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(user, user.getId());
         return new TokenResponse(user.getId(), jwtToken);
     }
 
     @Override
-    public User getAuthenticatedUser() throws AuthenticationException {
+    public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
-        return userRepository.findByEmail(userName)
-                .orElseThrow(()-> new AuthenticationException("User not found"));
+        String token = (String) authentication.getCredentials();
+        Long userId = jwtService.extractUserId(token);
+        return new User(userId);
     }
 }

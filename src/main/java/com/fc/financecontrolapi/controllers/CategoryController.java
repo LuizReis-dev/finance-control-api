@@ -29,23 +29,23 @@ public class CategoryController {
     }
 
     @GetMapping(value = "/user/actives")
-    public ResponseEntity<List<CategoryDTO>> getUserActiveCategories() throws AuthenticationException {
+    public ResponseEntity<List<CategoryDTO>> getUserActiveCategories(){
         return ResponseEntity.ok(service.getUserActiveCategories());
     }
 
     @GetMapping(value = "/user")
-    public ResponseEntity<List<CategoryDTO>> getUserCategories() throws AuthenticationException {
+    public ResponseEntity<List<CategoryDTO>> getUserCategories(){
         return ResponseEntity.ok(service.getUserCategories());
     }
 
     @PutMapping(value = "/inactivate/{categoryId}")
-    public ResponseEntity<Void> inactivateCategory(@PathVariable Long categoryId) throws AuthenticationException, ResourceNotFoundException {
+    public ResponseEntity<Void> inactivateCategory(@PathVariable Long categoryId) throws ResourceNotFoundException {
         service.inactivateCategory(categoryId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping(value = "/delete/{categoryId}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId) throws AuthenticationException, ResourceNotFoundException {
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId)throws ResourceNotFoundException {
         service.deleteCategory(categoryId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

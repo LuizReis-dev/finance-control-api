@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface CategoryService {
 
-    void addCategories(CategoryListDTO categories) throws AuthenticationException;
-    List<CategoryDTO> getUserActiveCategories() throws AuthenticationException;
-    List<CategoryDTO> getUserCategories() throws AuthenticationException;
-    void inactivateCategory(Long categoryId) throws AuthenticationException, ResourceNotFoundException;
-    void deleteCategory(Long categoryId) throws AuthenticationException, ResourceNotFoundException;
+    void addCategories(CategoryListDTO categories);
+    List<CategoryDTO> getUserActiveCategories();
+    List<CategoryDTO> getUserCategories();
+    void inactivateCategory(Long categoryId)throws ResourceNotFoundException;
+    void deleteCategory(Long categoryId) throws ResourceNotFoundException;
 }

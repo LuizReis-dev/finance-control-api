@@ -10,5 +10,5 @@ import com.fc.financecontrolapi.model.User;
 public interface AuthenticationService {
     TokenResponse signUp(SignUpRequest request) throws UserAlreadyExistsException;
     TokenResponse signIn(SignInRequest request) throws AuthenticationException;
-    User getAuthenticatedUser() throws AuthenticationException;
+    User getAuthenticatedUser();
 }
