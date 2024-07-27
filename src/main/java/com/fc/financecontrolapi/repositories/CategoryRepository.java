@@ -15,4 +15,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             "FROM Category obj " +
             "WHERE obj.deletedAt IS NULL AND obj.isActive = TRUE AND obj.user.id =:userId")
     List<CategoryDTO> findActiveCategoriesByUser(Long userId);
+
+    @Query("SELECT new com.fc.financecontrolapi.dtos.category.CategoryDTO(obj.name, obj.description, obj.isActive) " +
+            "FROM Category obj " +
+            "WHERE obj.deletedAt IS NULL AND obj.user.id =:userId")
+    List<CategoryDTO> findCategoriesByUser(Long userId);
 }

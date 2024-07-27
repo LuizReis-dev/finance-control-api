@@ -47,4 +47,10 @@ public class CategoryServiceImpl implements CategoryService {
 
         return repository.findActiveCategoriesByUser(loggedUser.getId());
     }
+
+    @Override
+    public List<CategoryDTO> getUserCategories() throws AuthenticationException {
+        User loggedUser = authenticationService.getAuthenticatedUser();
+        return repository.findCategoriesByUser(loggedUser.getId());
+    }
 }

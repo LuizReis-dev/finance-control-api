@@ -31,4 +31,9 @@ public class CategoryController {
     public ResponseEntity<List<CategoryDTO>> getUserActiveCategories() throws AuthenticationException {
         return ResponseEntity.ok(service.getUserActiveCategories());
     }
+
+    @GetMapping(value = "/user")
+    public ResponseEntity<List<CategoryDTO>> getUserCategories() throws AuthenticationException {
+        return ResponseEntity.ok(service.getUserCategories());
+    }
 }

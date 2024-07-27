@@ -10,4 +10,5 @@ public interface CategoryService {
 
     void addCategories(CategoryListDTO categories) throws AuthenticationException;
     List<CategoryDTO> getUserActiveCategories() throws AuthenticationException;
+    List<CategoryDTO> getUserCategories() throws AuthenticationException;
 }
