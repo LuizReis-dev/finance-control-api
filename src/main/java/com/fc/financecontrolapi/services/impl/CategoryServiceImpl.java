@@ -11,7 +11,6 @@ import com.fc.financecontrolapi.services.interfaces.AuthenticationService;
 import com.fc.financecontrolapi.services.interfaces.CategoryService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,5 +39,12 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
 
         repository.saveAll(categories);
+    }
+
+    @Override
+    public List<CategoryDTO> getUserActiveCategories() throws AuthenticationException {
+        User loggedUser = authenticationService.getAuthenticatedUser();
+
+        return repository.findActiveCategoriesByUser(loggedUser.getId());
     }
 }
