@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
@@ -20,4 +21,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             "FROM Category obj " +
             "WHERE obj.deletedAt IS NULL AND obj.user.id =:userId")
     List<CategoryDTO> findCategoriesByUser(Long userId);
+
+    @Query("SELECT obj FROM Category obj " +
+            "WHERE obj.deletedAt IS NULL AND obj.user.id = :userId AND obj.id = :categoryId")
+    Optional<Category> findCategoryByUserAndCategoryId(Long userId, Long categoryId);
+
 }

@@ -2,6 +2,7 @@ package com.fc.financecontrolapi.controllers.exception;
 
 import com.fc.financecontrolapi.dtos.errors.CustomError;
 import com.fc.financecontrolapi.dtos.errors.ValidationError;
+import com.fc.financecontrolapi.exceptions.ResourceNotFoundException;
 import com.fc.financecontrolapi.exceptions.UnprocessableEntityException;
 import com.fc.financecontrolapi.exceptions.user.AuthenticationException;
 import com.fc.financecontrolapi.exceptions.user.UserAlreadyExistsException;
@@ -46,6 +47,13 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<CustomError> authenticationException(MethodArgumentNotValidException e, HttpServletRequest request){
         HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomError response = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<CustomError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.NOT_FOUND;
         CustomError response = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(response.getStatus()).body(response);
     }

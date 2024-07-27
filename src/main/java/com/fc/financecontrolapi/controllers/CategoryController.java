@@ -2,6 +2,7 @@ package com.fc.financecontrolapi.controllers;
 
 import com.fc.financecontrolapi.dtos.category.CategoryDTO;
 import com.fc.financecontrolapi.dtos.category.CategoryListDTO;
+import com.fc.financecontrolapi.exceptions.ResourceNotFoundException;
 import com.fc.financecontrolapi.exceptions.user.AuthenticationException;
 import com.fc.financecontrolapi.services.interfaces.CategoryService;
 import jakarta.validation.Valid;
@@ -35,5 +36,11 @@ public class CategoryController {
     @GetMapping(value = "/user")
     public ResponseEntity<List<CategoryDTO>> getUserCategories() throws AuthenticationException {
         return ResponseEntity.ok(service.getUserCategories());
+    }
+
+    @PutMapping(value = "/inactivate/{categoryId}")
+    public ResponseEntity<Void> inactivateCategory(@PathVariable Long categoryId) throws AuthenticationException, ResourceNotFoundException {
+        service.inactivateCategory(categoryId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

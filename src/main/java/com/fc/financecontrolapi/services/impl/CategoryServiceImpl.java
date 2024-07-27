@@ -2,6 +2,7 @@ package com.fc.financecontrolapi.services.impl;
 
 import com.fc.financecontrolapi.dtos.category.CategoryDTO;
 import com.fc.financecontrolapi.dtos.category.CategoryListDTO;
+import com.fc.financecontrolapi.exceptions.ResourceNotFoundException;
 import com.fc.financecontrolapi.exceptions.UnprocessableEntityException;
 import com.fc.financecontrolapi.exceptions.user.AuthenticationException;
 import com.fc.financecontrolapi.model.Category;
@@ -9,9 +10,11 @@ import com.fc.financecontrolapi.model.User;
 import com.fc.financecontrolapi.repositories.CategoryRepository;
 import com.fc.financecontrolapi.services.interfaces.AuthenticationService;
 import com.fc.financecontrolapi.services.interfaces.CategoryService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,5 +55,16 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDTO> getUserCategories() throws AuthenticationException {
         User loggedUser = authenticationService.getAuthenticatedUser();
         return repository.findCategoriesByUser(loggedUser.getId());
+    }
+
+    @Override
+    @Transactional
+    public void inactivateCategory(Long categoryId) throws AuthenticationException, ResourceNotFoundException {
+        User loggedUser = authenticationService.getAuthenticatedUser();
+        Category category = repository.findCategoryByUserAndCategoryId(loggedUser.getId(), categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found for this user!"));
+
+        category.setIsActive(false);
+        repository.save(category);
     }
 }
