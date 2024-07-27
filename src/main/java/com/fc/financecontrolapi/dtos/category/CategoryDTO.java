@@ -12,4 +12,10 @@ public class CategoryDTO {
     @NotBlank
     private String name;
     private String description;
+    private Boolean isActive;
+
+    public CategoryDTO(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }
