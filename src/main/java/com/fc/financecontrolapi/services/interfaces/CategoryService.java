@@ -13,5 +13,6 @@ public interface CategoryService {
     List<CategoryDTO> getUserActiveCategories();
     List<CategoryDTO> getUserCategories();
     void inactivateCategory(Long categoryId)throws ResourceNotFoundException;
+    void activateCategory(Long categoryId)throws ResourceNotFoundException;
     void deleteCategory(Long categoryId) throws ResourceNotFoundException;
 }

@@ -30,6 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void addCategories(CategoryListDTO categoriesDTO) {
         User loggedUser = authenticationService.getAuthenticatedUser();
 
@@ -63,6 +64,14 @@ public class CategoryServiceImpl implements CategoryService {
     public void inactivateCategory(Long categoryId) throws ResourceNotFoundException {
         Category category = findCategoryByUser(categoryId);
         category.setIsActive(false);
+        repository.save(category);
+    }
+
+    @Override
+    @Transactional
+    public void activateCategory(Long categoryId) throws ResourceNotFoundException {
+        Category category = findCategoryByUser(categoryId);
+        category.setIsActive(true);
         repository.save(category);
     }
 

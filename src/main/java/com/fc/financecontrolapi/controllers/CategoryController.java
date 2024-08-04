@@ -44,6 +44,12 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @PutMapping(value = "/activate/{categoryId}")
+    public ResponseEntity<Void> activateCategory(@PathVariable Long categoryId) throws ResourceNotFoundException {
+        service.activateCategory(categoryId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     @DeleteMapping(value = "/delete/{categoryId}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId)throws ResourceNotFoundException {
         service.deleteCategory(categoryId);
