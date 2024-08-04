@@ -18,9 +18,6 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="user_id", nullable=false)
-    private User user;
-    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="category_id", nullable=false)
     private Category category;
     @Column(nullable = false)
