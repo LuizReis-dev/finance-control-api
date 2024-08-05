@@ -23,9 +23,20 @@ public class Expense {
     @Column(nullable = false)
     private Integer amount;
     @Column(name = "payment_method", nullable = false)
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
     @Column(columnDefinition = "TEXT")
     private String description;
+    @Column(nullable = false)
+    private Instant paymentDate;
     private Instant createdAt;
     private Instant deletedAt;
+
+    public Expense(Category category, Integer amount, PaymentMethod paymentMethod, String description) {
+        this.category = category;
+        this.amount = amount;
+        this.paymentMethod = paymentMethod;
+        this.description = description;
+        this.createdAt = Instant.now();
+    }
 }

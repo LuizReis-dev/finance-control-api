@@ -83,7 +83,8 @@ public class CategoryServiceImpl implements CategoryService {
         repository.save(category);
     }
 
-    private Category findCategoryByUser(Long categoryId) throws ResourceNotFoundException {
+    @Override
+    public Category findCategoryByUser(Long categoryId) throws ResourceNotFoundException {
         User loggedUser = authenticationService.getAuthenticatedUser();
         return repository.findCategoryByUserAndCategoryId(loggedUser.getId(), categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found for this user!"));

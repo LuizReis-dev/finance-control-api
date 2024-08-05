@@ -21,10 +21,13 @@ public class Category {
     private Boolean isActive;
     private Instant createdAt;
     private Instant deletedAt;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Category(Long id){
+        this.id = id;
+    }
     public Category(String name, String description, User user){
         this.name = name;
         this.description = description;
