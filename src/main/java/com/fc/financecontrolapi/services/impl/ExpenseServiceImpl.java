@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 @Service
@@ -54,7 +51,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         PaymentMethod paymentMethod = PaymentMethod.valueOf(request.getPaymentMethod().toUpperCase());
 
         Expense expense = new Expense(new Category(request.getCategoryId()), request.getAmount(), paymentMethod, request.getDescription());
-
+        expense.setExpenseId(UUID.randomUUID());
         expense.setPaymentDate(Instant.now());
         repository.save(expense);
     }
@@ -70,7 +67,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         Integer installments = request.getInstallments();
         Integer installmentAmount = request.getAmount() / installments;
-
+        UUID expenseId = UUID.randomUUID();
         for(int i = 0; i < installments; i++) {
 
             LocalDateTime localDateTime = LocalDateTime.of(currentYear, initialMonth, 1, 0, 0);
@@ -80,6 +77,7 @@ public class ExpenseServiceImpl implements ExpenseService {
             Expense expense = new Expense(new Category(request.getCategoryId()), installmentAmount, paymentMethod, request.getDescription());
 
             expense.setPaymentDate(paymentDate);
+            expense.setExpenseId(expenseId);
             expenses.add(expense);
         }
 
